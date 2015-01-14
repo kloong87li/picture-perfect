@@ -4,7 +4,7 @@ import requests
 
 class RaspiServer:
 
-    URL = "0.0.0.0:80/"
+    URL = "http://0.0.0.0:80/"
 
 
     def __init__(self):

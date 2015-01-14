@@ -15,16 +15,21 @@ class ControllerListener(Leap.Listener):
 
 
     def on_connect(self, controller):
-        controller.enable_gesture(Leap.Gesture.TYPE_CIRCLE);
-        controller.enable_gesture(Leap.Gesture.TYPE_KEY_TAP);
-        controller.enable_gesture(Leap.Gesture.TYPE_SCREEN_TAP);
-        controller.enable_gesture(Leap.Gesture.TYPE_SWIPE);
+        controller.enable_gesture(Leap.Gesture.TYPE_CIRCLE)
+        controller.enable_gesture(Leap.Gesture.TYPE_KEY_TAP)
+        controller.enable_gesture(Leap.Gesture.TYPE_SCREEN_TAP)
+        controller.enable_gesture(Leap.Gesture.TYPE_SWIPE)
 
-        self.raspi = RaspiServer();
+        self.raspi = RaspiServer()
+        self.count = 0
         print "Connected"
 
 
     def on_frame(self, controller):
+        self.count += 1
+        if (self.count % 25 != 0):
+            return
+
         frame = controller.frame()
 
         for hand in frame.hands:
