@@ -12,6 +12,7 @@ def set_color():
     if not value:
         return "invalid request"
     else:
+        print "set color " + value 
         return "set color " + value 
 
 
@@ -22,6 +23,7 @@ def rotate_counterclockwise():
     if not value:
         return "invalid request"
     else:
+        print "rotated counterclockwise " + value 
         return "rotated counterclockwise " + value 
 
 
@@ -32,6 +34,7 @@ def rotate_clockwise():
     if not value:
         return "invalid request"
     else:
+        print "rotated clockwise " + value 
         return "rotated clockwise " + value 
 
 if __name__ == "__main__":
