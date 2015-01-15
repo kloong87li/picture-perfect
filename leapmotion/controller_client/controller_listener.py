@@ -26,6 +26,7 @@ class ControllerListener(Leap.Listener):
 
 
     def on_frame(self, controller):
+        # throtle framerate
         self.count += 1
         if (self.count % 25 != 0):
             return

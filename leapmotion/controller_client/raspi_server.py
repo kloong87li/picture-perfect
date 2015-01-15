@@ -4,8 +4,7 @@ import requests
 
 class RaspiServer:
 
-    URL = "http://0.0.0.0:80/"
-
+    URL = "http://pp-rpi.noip.me:80/"
 
     def __init__(self):
         return
