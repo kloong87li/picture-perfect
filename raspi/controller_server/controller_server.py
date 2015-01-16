@@ -124,7 +124,7 @@ def start_server():
 
 if __name__ == "__main__":
     with picamera.PiCamera() as camera:
-        p1 = Process(target = start_camera, args = camera)
+        p1 = Process(target = start_camera, args = (camera,))
         p2 = Process(target = start_server)
         p1.Start()
         p2.Start()
