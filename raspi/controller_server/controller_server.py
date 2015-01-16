@@ -1,6 +1,7 @@
-from flask import Flask, request, jsonify
-import threading
-import picamera
+from flask import Flask, request, jsonify 
+import threading 
+import picamera 
+import time
 
 app = Flask(__name__)
 
@@ -26,7 +27,7 @@ def set_brightness():
         # return camera brightness
         return response_success(value = camera.brightness)
 
-    elif reuqest.method == 'POST':
+    elif request.method == 'POST':
         value = request.args['value']
         if not value:
             # no value param, return error response
@@ -42,7 +43,7 @@ def set_contrast():
         # return camera contrast
         return response_success(value = camera.contrast)
 
-    elif reuqest.method == 'POST':
+    elif request.method == 'POST':
         value = request.args['value']
         if not value:
             # no value param, return error response
@@ -58,7 +59,7 @@ def set_zoom():
         # return camera zoom
         return response_success(value = camera.zoom)
 
-    elif reuqest.method == 'POST':
+    elif request.method == 'POST':
         value = request.args['value']
         if not value:
             # no value param, return error response
@@ -74,7 +75,7 @@ def set_image_effect():
         # return camera image_effect
         return response_success(value = camera.image_effect)
 
-    elif reuqest.method == 'POST':
+    elif request.method == 'POST':
         value = request.args['value']
         if not value:
             # no value param, return error response
@@ -92,7 +93,7 @@ def set_flip():
         flip = (camera.vflip or camera.hflip)
         return response_success(value = flip)
 
-    elif reuqest.method == 'POST':
+    elif request.method == 'POST':
         value = request.args['value']
         if not value:
             # no value param, return error response
@@ -112,6 +113,21 @@ def capture():
     camera.capture('picture_perfect', 'jpeg')
     return response_success()
 
+@app.route('/preview', methods=['POST'])
+def preview():
+    global camera 
+    camera = picamera.PiCamera()
+
+    #start the camera preview
+    camera.resolution = (640, 480)
+    camera.start_preview()
+    return response_success()
+
+@app.route('/stop_preview', methods=['POST'])
+def stop_preview():
+    camera.stop_preview()
+    return response_success()
+
 
 class myCamera(threading.Thread):
     def __init__(self):
@@ -119,11 +135,14 @@ class myCamera(threading.Thread):
 
 
     def run(self):
-        camera.resolution = (1920, 1080)
+        camera.resolution = (640, 480)
+	#camera.resolution = (1920, 1080)
 
         # Start a preview
         camera.start_preview()
-        time.sleep(2)
+        while (True):
+	    continue
+	camera.stop_preview()
 
 class myServer(threading.Thread):
     def __init__(self):
@@ -133,20 +152,17 @@ class myServer(threading.Thread):
         app.run(host=HOST, port=PORT, debug=True)
 
 if __name__ == "__main__":
-    with picamera.PiCamera() as camera:
-        threads = []
-        thread1 = myCamera()
-        thread2 = myServer()
 
-        thread1.start()
-        thread2.start()
+#    threads = []
+#    thread1 = myCamera()
 
-        threads.append(thread1)
-        threads.append(thread2)
+#    thread1.start()
 
-        for t in threads:
-            t.join()
+#    threads.append(thread1)
+    app.run(host=HOST, port=PORT, debug=True)
 
+ #   for t in threads:
+  #      t.join()
 
 
 
