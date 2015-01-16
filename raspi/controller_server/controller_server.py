@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-
+from multiprocessing import Process
 import picamera
 
 app = Flask(__name__)
@@ -112,17 +112,24 @@ def capture():
     camera.capture('picture_perfect', 'jpeg')
     return response_success()
 
+def start_camera(camera):
+    camera.resolution = (1920, 1080)
+
+    # Start a preview
+    camera.start_preview()
+
+
+def start_server():
+    app.run(host=HOST, port=PORT, debug=True)
 
 if __name__ == "__main__":
     with picamera.PiCamera() as camera:
-        camera.resolution = (640, 480)
-        # Start a preview and let the camera warm up for 2 seconds
-        camera.start_preview()
-        time.sleep(2)
+        p1 = Process(target = start_camera, args = camera)
+        p2 = Process(target = start_server)
+        p1.Start()
+        p2.Start()
 
-        app.run(host=HOST, port=PORT, debug=True)
-    finally:
-        camera.stop_preview()
+    camera.stop_preview()
 
 
 
