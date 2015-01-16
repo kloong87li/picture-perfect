@@ -115,10 +115,10 @@ def capture():
     camera.capture(photo_path)
 
         # Consumer keys and access tokens, used for OAuth  
-    consumer_key = 'I73UiEZsH83oMd9RfpFEulJS5'  
-    consumer_secret = 'fge6JKablQXB1Hy31qoc1FeaYmLq160p0haku2PpGcy9JQJ9M1'  
-    access_token = '2981412352-YolOdurfxumDu1bMIAfDdro4f6Evkd4Wbo0waMc'  
-    access_token_secret = '9ZfGZ31gkejWBHxnFhuuBFB3oB2G0gco0t9awTxGeyS5o'  
+    consumer_key = 'cD6yZZfN1McLIoYgncUIiiueg'  
+    consumer_secret = 'EvmTgK67nEYwHG0qEfv805uO8gZUJzIseIk7vvNPAh0gFZYTbr'  
+    access_token = '2981412352-nL4RM7CpAidcku4YNfOmmo74WRlIvcSZ9GDlQmO'  
+    access_token_secret = 'TBofSDvbP6nc7nYGirpGqsf6AnO8nNGQbL0W4fZRghx2u'  
       
     # OAuth process, using the keys and tokens  
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)  
