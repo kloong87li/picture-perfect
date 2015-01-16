@@ -29,8 +29,9 @@ try:
         image_stream.seek(0)
         image = Image.open(image_stream)
         print('Image is %dx%d' % image.size)
-        image.verify()
-        print('Image is verified')
+        # image.verify()
+        # print('Image is verified')
+        image.show()
 finally:
     connection.close()
     server_socket.close()
