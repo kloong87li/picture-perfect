@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify 
-import threading 
+from datetime import datetime
+import tweepy
 import picamera 
-import time
 
 app = Flask(__name__)
 
@@ -14,7 +14,6 @@ PORT = 80
 # creates a json response with success = false
 def response_error():
     return jsonify(success = False)
-
 
 # creates a json response with success = true in addition to other args
 def response_success(**kwargs):
@@ -109,8 +108,29 @@ def set_flip():
 
 @app.route('/capture', methods=['POST'])
 def capture():
+    photo_path = 'picture_perfect.jpg'
+
     # take picture and return success response
-    camera.capture('picture_perfect', 'jpeg')
+    timestamp = datetime.now()
+    camera.capture(photo_path)
+
+        # Consumer keys and access tokens, used for OAuth  
+    consumer_key = 'I73UiEZsH83oMd9RfpFEulJS5'  
+    consumer_secret = 'fge6JKablQXB1Hy31qoc1FeaYmLq160p0haku2PpGcy9JQJ9M1'  
+    access_token = '2981412352-YolOdurfxumDu1bMIAfDdro4f6Evkd4Wbo0waMc'  
+    access_token_secret = '9ZfGZ31gkejWBHxnFhuuBFB3oB2G0gco0t9awTxGeyS5o'  
+      
+    # OAuth process, using the keys and tokens  
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)  
+    auth.set_access_token(access_token, access_token_secret)  
+       
+    # Creation of the actual interface, using authentication  
+    api = tweepy.API(auth)  
+      
+    # Send the tweet with photo  
+    status = 'Picture Perfect: ' + timestamp.strftime('%Y/%m/%d %H:%M:%S')   
+    api.update_with_media(photo_path, status=status)  
+
     return response_success()
 
 @app.route('/preview', methods=['POST'])
@@ -119,7 +139,7 @@ def preview():
     camera = picamera.PiCamera()
 
     #start the camera preview
-    camera.resolution = (640, 480)
+    camera.resolution = (1920, 1080)
     camera.start_preview()
     return response_success()
 
@@ -129,42 +149,6 @@ def stop_preview():
     return response_success()
 
 
-class myCamera(threading.Thread):
-    def __init__(self):
-        threading.Thread.__init__(self)
-
-
-    def run(self):
-        camera.resolution = (640, 480)
-	#camera.resolution = (1920, 1080)
-
-        # Start a preview
-        camera.start_preview()
-        while (True):
-	    continue
-	camera.stop_preview()
-
-class myServer(threading.Thread):
-    def __init__(self):
-        threading.Thread.__init__(self)
-
-    def run(self):
-        app.run(host=HOST, port=PORT, debug=True)
-
 if __name__ == "__main__":
-
-#    threads = []
-#    thread1 = myCamera()
-
-#    thread1.start()
-
-#    threads.append(thread1)
     app.run(host=HOST, port=PORT, debug=True)
-
- #   for t in threads:
-  #      t.join()
-
-
-
-
 
