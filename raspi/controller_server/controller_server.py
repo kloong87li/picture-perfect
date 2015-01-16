@@ -13,12 +13,15 @@ PORT = 80
 
 # creates a json response with success = false
 def response_error():
-    return jsonify(success = False)
+    response = jsonify(success = False)
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    return response
 
 # creates a json response with success = true in addition to other args
 def response_success(**kwargs):
-    return jsonify(success = True, **kwargs)
-
+    response = jsonify(success = True, **kwargs)
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    return response
 
 @app.route('/brightness', methods=['POST', 'GET'])
 def set_brightness():
@@ -33,7 +36,8 @@ def set_brightness():
             return response_error()
         else:
             # set camera brightness and return success response
-            camera.brightness = value
+	    # valid brightness is an int (0,100)
+            camera.brightness = int(value)
             return response_success()
 
 @app.route('/contrast', methods=['POST', 'GET'])
@@ -49,14 +53,15 @@ def set_contrast():
             return response_error()
         else:
             # set camera contrast and return success response
-            camera.contrast = value
+	    # valid contrast is an int (-100, 100)
+            camera.contrast = int(value)
             return response_success()
 
 @app.route('/zoom', methods=['POST', 'GET'])
 def set_zoom():
     if request.method == 'GET':
         # return camera zoom
-        return response_success(value = camera.zoom)
+        return response_success(value = camera.zoom[2])
 
     elif request.method == 'POST':
         value = request.args['value']
@@ -64,8 +69,10 @@ def set_zoom():
             # no value param, return error response
             return response_error()
         else:
+	    val = float(value)
+	    tup = (val/2, val/2, val, val)
             # set camera zoom and return success response
-            camera.zoom = value
+            camera.zoom = tup
             return response_success()
 
 @app.route('/image_effect', methods=['POST', 'GET'])
@@ -128,7 +135,7 @@ def capture():
     api = tweepy.API(auth)  
       
     # Send the tweet with photo  
-    status = 'Picture Perfect: ' + timestamp.strftime('%Y/%m/%d %H:%M:%S')   
+    status = 'Picture Perfect: ' + timestamp.strftime('%H:%M:%S') + '#cmu #build18'   
     api.update_with_media(photo_path, status=status)  
 
     return response_success()
@@ -139,7 +146,7 @@ def preview():
     camera = picamera.PiCamera()
 
     #start the camera preview
-    camera.resolution = (1920, 1080)
+    camera.resolution = (1024, 768)
     camera.start_preview()
     return response_success()
 
