@@ -126,8 +126,9 @@ if __name__ == "__main__":
     with picamera.PiCamera() as camera:
         p1 = Process(target = start_camera, args = (camera,))
         p2 = Process(target = start_server)
-        p1.start()
-        p2.start()
+        while True:
+            p1.start()
+            p2.start()
 
     camera.stop_preview()
 
