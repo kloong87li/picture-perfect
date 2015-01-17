@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Picture Perfect</title>
+
+    <link rel="stylesheet" type="text/css" href="reset.css">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+
+    <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src="//js.leapmotion.com/leap-0.6.3.js"></script>
+    <script src="api.js"></script>
+
+    <script src="cursor.js"></script>
+    <script src="adjustment_panels.js"></script>
+    <script src="settings.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+    var WINDOW_HEIGHT = 600;
+    var WINDOW_WIDTH = 1400;
+
+      $(document).ready(function() {
+        var main = new Main();
+
+        main.start();
+
+      });
+    </script>
+  </head>
+ 
+  <body>
+    <div class="outer-frame">
+      <div class="left-frame">
+        <div class='settings-tiles-container'></div>
+        <div class='snap-pic-button'>
+          Take a Picture!
+        </div>
+      <div class='loading'></div>
+        
+      </div>
+
+      <div class="right-frame">
+
+      </div>
+
+    </div>
+
+
+    <!-- Templates for panels -->
+    <div class='adjustment-panel numeric'>
+      <div class='panel-title'></div>
+      <div class= 'panel-active-frame'>
+        
+        <div class='numeric-bar'>
+          <div class='numeric-text'></div>
+          <div class='numeric-bar-inner'></div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class='adjustment-panel effects'>
+      <div class='effect-options'>
+
+      </div>
+    </div>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
